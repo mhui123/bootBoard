@@ -3,7 +3,4 @@
 <!DOCTYPE html>
 <html>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript">
-	let chkType = "";
-</script>
 </html>

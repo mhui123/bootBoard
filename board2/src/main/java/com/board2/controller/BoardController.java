@@ -30,7 +30,6 @@ public class BoardController {
 		for(BoardDTO dto : list) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			dto.setInsertTime(dto.getInsertTime().formatted(formatter));
-			System.out.println(dto.getIdx() +"번 조회수 : "+ dto.getViewCnt());
 		}
 		model.put("boardList", list);
 		
@@ -67,9 +66,6 @@ public class BoardController {
 		dto.setContent((String)param.get("content"));
 		dto.setWriter((String)param.get("writer"));
 		
-		System.out.println("param title:"+ param.get("title"));
-		System.out.println("param content:"+ param.get("content"));
-		System.out.println("param writer:"+ param.get("writer"));
 		return boardService.insertBoard(dto);
 	}
 	

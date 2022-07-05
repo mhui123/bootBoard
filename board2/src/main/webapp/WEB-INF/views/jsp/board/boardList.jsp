@@ -28,7 +28,19 @@
 			}
 			});
 	}
+	function goToWrite(){
+		let url = "board/writePage";
+		$.ajax({
+			url : url,
+			method : "get",
+			success: function(data){
+				//window.location.href(url); deprecated
+				window.location.assign(url); 
+			}
+		});
+	}
 </script>
+	<button id="writeBtn" onclick="goToWrite()">글쓰기</button>
 	<table>
 		<thead>
 			<tr>
@@ -42,11 +54,15 @@
 		<tbody>
 		<c:forEach var="boardDTO" items="${boardList}" varStatus="status">  
 			<tr>
-				<td>${boardDTO.idx}</td>
-				<td id="${boardDTO.idx}" onclick="idChk(id)">${boardDTO.title}</td>
-				<td>${boardDTO.writer}</td>
-				<td>${boardDTO.viewCnt}</td>
-				<td><c:out value="${boardDTO.insertTime}"/> </td>
+				<c:choose>
+					<c:when test="${boardDTO.deleteYn ne 'Y'}">
+						<td>${boardDTO.idx}</td>
+						<td id="${boardDTO.idx}" onclick="idChk(id)">${boardDTO.title}</td>
+						<td>${boardDTO.writer}</td>
+						<td>${boardDTO.viewCnt}</td>
+						<td><c:out value="${boardDTO.insertTime}"/> </td>
+					</c:when>
+				</c:choose>
 			</tr>  
 		</c:forEach>
 		</tbody>

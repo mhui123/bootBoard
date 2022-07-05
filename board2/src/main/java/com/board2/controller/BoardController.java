@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,7 @@ public class BoardController {
 		
 		BoardDTO dto = boardService.selectBoardDetail(id);
 		model.put("dto", dto);
+		model.put("gubun", "select");
 		
 		return "board/detail";
 	}
@@ -52,28 +54,43 @@ public class BoardController {
 		boardService.cntPlus(id);
 	}
 	
-	@PostMapping("board/write")
-	public String writeContent(ModelMap model ) {
-		String chkType = "insert";
-		model.put("insert", chkType);
-		
+	@GetMapping("board/writePage")
+	public String writeContent(ModelMap model) {
 		return "board/write";
 	}
 	
-	@GetMapping("board/updateContent")
-	public String updateContent(ModelMap model, @RequestParam Map<String, Object> param) {
-		String chkType = "update";
-		model.put("chkType", chkType);
+	@PostMapping("board/writeContent")
+	@ResponseBody
+	public int insertContent(@RequestParam Map<String, Object> param) {
+		BoardDTO dto = new BoardDTO();
+		dto.setTitle((String)param.get("title"));
+		dto.setContent((String)param.get("content"));
+		dto.setWriter((String)param.get("writer"));
 		
-		return "board/write";
+		System.out.println("param title:"+ param.get("title"));
+		System.out.println("param content:"+ param.get("content"));
+		System.out.println("param writer:"+ param.get("writer"));
+		return boardService.insertBoard(dto);
 	}
 	
-	@PostMapping("board/deleteContent")
-	public String deleteContent(ModelMap model, long id) {
-		int result = boardService.deleteBoard(id);
-		if(result > 0) {
-			return "board/boardList";
-		}
-		return "redirect:board/detail";
+	@PutMapping("board/updatePage")
+	@ResponseBody
+	public int updateContent(ModelMap model, @RequestParam Map<String, Object> param) {
+		BoardDTO dto = new BoardDTO();
+		dto.setTitle((String)param.get("title"));
+		dto.setContent((String)param.get("content"));
+		dto.setWriter((String)param.get("writer"));
+		dto.setIdx(Long.parseLong((String)param.get("idx")));
+		
+		return boardService.updateBoard(dto);
+	}
+	
+	@DeleteMapping("board/deletePage")
+	@ResponseBody
+	public int deleteContent(ModelMap model, @RequestParam Map<String, Object> param) {
+		long idx = Long.parseLong((String)param.get("idx"));
+		int result = boardService.deleteBoard(idx);
+		
+		return result;
 	}
 }

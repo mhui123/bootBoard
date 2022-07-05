@@ -15,10 +15,21 @@
 	</sql>
 	
 	<insert id="insertBoard" parameterType="BoardDTO">
-		INSERT INTO tb_board(<include refid="boardColumns"/>)
+		INSERT INTO tb_board(
+		title
+		,content
+		,writer
+		,view_cnt
+		,notice_yn
+		,secret_yn
+		,delete_yn
+		,insert_time
+		,update_time
+		,delete_time
+		)
 		VALUES(
-		#{idx}
-		,#{title}
+		#{title}
+		,#{content}
 		,#{writer}
 		,0
 		,IFNULL(#{noticeYn},'N')

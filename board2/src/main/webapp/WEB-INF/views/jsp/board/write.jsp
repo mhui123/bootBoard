@@ -1,33 +1,55 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+<jsp:include page="../common/common.jsp" />
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<script type="text/javascript">
-		let update = "${update}";
-		let insert = "${insert}";
+	let rootPath = "${pageContext.request.contextPath}/";
+	$(function(){
+		$('#confirmBtn').on('click',function(){
+			let url = rootPath + "board/writeContent"
+			let newTitle = $('#titleInput').val();
+			let newContent = $('#contentInput').val();
+			$.ajax({
+				url : url,
+				method : "post",
+				data : {
+					title : newTitle,
+					content : newContent,
+					writer : "tester"
+				},
+				success : function(data) {
+					if(data > 0){
+						alert("write complete");
+						window.location.assign(rootPath); 
+					}
+				}
+			});
+		})
+	});
 	</script>
 	<table>
 		<tbody>
 			<tr>
 				<td>
-					<p>Á¦¸ñ</p>
+					<p>ì œëª©</p>
 					<input type="text" id="titleInput"/>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<p>³»¿ë</p>
-					<input type="text" id="titleInput"/>
+					<p>ë‚´ìš©</p>
+					<input type="text" id="contentInput"/>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<button id="confirmBtn">È®ÀÎ</button>
-	<button id="cancelBtn">Ãë¼Ò</button>
+	<button id="confirmBtn">í™•ì¸</button>
+	<button id="cancelBtn">ì·¨ì†Œ</button>
 </body>
 </html>

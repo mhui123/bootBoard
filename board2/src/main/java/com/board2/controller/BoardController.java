@@ -2,16 +2,17 @@ package com.board2.controller;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.board2.domain.BoardDTO;
 import com.board2.service.BoardService;
@@ -35,11 +36,6 @@ public class BoardController {
 		return "board/boardList";
 	}
 	
-	@GetMapping("/board/write.do")
-	public String openBoardWrite(Model model) {
-		return "board/write";
-	}
-	
 	@GetMapping("/board/detail/{id}")
 	public String openDetail(@PathVariable("id") Long id, ModelMap model) {
 		log.debug("clicked id: {}", id);
@@ -55,18 +51,30 @@ public class BoardController {
 	public void cntPlus(@PathVariable("id") Long id) {
 		boardService.cntPlus(id);
 	}
-	@PostMapping("/writeContent")
-	public void writeContent() {
+	
+	@GetMapping("board/write")
+	public String writeContent(ModelMap model) {
+		String chkType = "insert";
+		model.put("chkType", chkType);
 		
+		return "board/write";
 	}
 	
-	@PutMapping("/update")
-	public void updateContent() {
+	@PostMapping("board/updateContent")
+	@ResponseBody
+	public String updateContent(ModelMap model, @RequestParam Map<String, Object> param) {
+		String chkType = "update";
+		model.put("chkType", chkType);
 		
+		return "board/write";
 	}
 	
-	@DeleteMapping("/delete")
-	public void deleteContent() {
-		
+	@PostMapping("board/deleteContent")
+	public String deleteContent(ModelMap model, long id) {
+		int result = boardService.deleteBoard(id);
+		if(result > 0) {
+			return "board/boardList";
+		}
+		return "redirect:board/detail";
 	}
 }

@@ -52,16 +52,15 @@ public class BoardController {
 		boardService.cntPlus(id);
 	}
 	
-	@GetMapping("board/write")
-	public String writeContent(ModelMap model) {
+	@PostMapping("board/write")
+	public String writeContent(ModelMap model ) {
 		String chkType = "insert";
-		model.put("chkType", chkType);
+		model.put("insert", chkType);
 		
 		return "board/write";
 	}
 	
-	@PostMapping("board/updateContent")
-	@ResponseBody
+	@GetMapping("board/updateContent")
 	public String updateContent(ModelMap model, @RequestParam Map<String, Object> param) {
 		String chkType = "update";
 		model.put("chkType", chkType);

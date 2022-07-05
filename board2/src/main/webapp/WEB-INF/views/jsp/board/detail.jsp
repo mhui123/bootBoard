@@ -13,10 +13,19 @@ let rootPath = "${pageContext.request.contextPath}/";
 	$(function(){
 		$('#updateBtn').on('click',function(){
 			let param = "${dto.idx}";
-			let rootPath = "${pageContext.request.contextPath}/";
+			let form = $('<form></form');
+			let url = rootPath + "board/updateContent"
+			form.attr("action", url);
+			let field = $('<input></input>');
+			field.id("id","isUpdate")
+			field.attr("value", "Y");
+			form.append(field);
+			
+			$(form).appendTo('body').submit();
+			/*
 			$.ajax({
-				url : rootPath + "board/updateContent",
-				method : "post",
+				url : url,
+				method : "get",
 				data : {
 					id : "${dto.idx}"
 				},
@@ -25,7 +34,7 @@ let rootPath = "${pageContext.request.contextPath}/";
 					window.location.assign(newUrl);
 				}
 			});
-			
+			*/
 		});
 		
 		$('#deleteBtn').on('click',function(){
